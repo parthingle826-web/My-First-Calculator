@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scientific Calculator Pro</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ---------- LOADING SCREEN ---------- */
+#loader{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#0f2027;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:999;
+}
+
+.loader-circle{
+  width:80px;
+  height:80px;
+  border:6px solid #444;
+  border-top:6px solid #00f7ff;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  100%{ transform:rotate(360deg); }
+}
+
+#loader h2{
+  color:white;
+  margin-top:15px;
+  letter-spacing:2px;
+}
+
+/* ---------- MAIN BACKGROUND ---------- */
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg,#1f4037,#99f2c8,#1e3c72,#2a5298);
+  background-size:400% 400%;
+  animation:gradient 12s ease infinite;
+}
+
+@keyframes gradient{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ---------- CALCULATOR ---------- */
+.calculator{
+  backdrop-filter: blur(15px);
+  background: rgba(255,255,255,0.08);
+  border-radius:20px;
+  padding:20px;
+  width:360px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+
+/* DISPLAY */
+.display{
+  width:100%;
+  height:70px;
+  border:none;
+  border-radius:10px;
+  margin-bottom:15px;
+  padding:10px;
+  font-size:24px;
+  text-align:right;
+  background:#000;
+  color:#0f0;
+}
+
+/* BUTTON GRID */
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+
+/* BUTTON STYLE */
+button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+button:hover{
+  transform:scale(1.08);
+}
+
+/* COLORS */
+.num{ background:#222; color:white; }
+.op{ background:#ff9500; color:white; }
+.sci{ background:#007bff; color:white; }
+.equal{ background:#28a745; color:white; grid-column:span 2; }
+.clear{ background:#dc3545; color:white; }
+.del{ background:#6c757d; color:white; }
+.brec{background-color: violet;color: whitesmoke;}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-circle"></div>
+  <h2>Loading Calculator...</h2>
+</div>
+
+<!-- CALCULATOR -->
+<div class="calculator" id="app" style="display:none;">
+  <input type="text" id="display" class="display" disabled>
+
+  <div class="buttons">
+
+    <!-- Scientific -->
+    <button class="sci" onclick="calc('Math.sin(')">sin</button>
+    <button class="sci" onclick="calc('Math.cos(')">cos</button>
+    <button class="sci" onclick="calc('Math.tan(')">tan</button>
+    <button class="sci" onclick="calc('Math.log10(')">log</button>
+    <button class="sci" onclick="calc('Math.sqrt(')">√</button>
+
+    <!-- Controls -->
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button class="del" onclick="del()">⌫</button>
+    <button class="op" onclick="calc('/')">÷</button>
+    <button class="op" onclick="calc('*')">×</button>
+    <button class="sci" onclick="calc('**')">x²</button>
+
+    <!-- Numbers -->
+    <button class="num" onclick="calc('7')">7</button>
+    <button class="num" onclick="calc('8')">8</button>
+    <button class="num" onclick="calc('9')">9</button>
+    <button class="op" onclick="calc('-')">−</button>
+    <button class="sci" onclick="calc('Math.PI')">π</button>
+   
+
+    <button class="num" onclick="calc('4')">4</button>
+    <button class="num" onclick="calc('5')">5</button>
+    <button class="num" onclick="calc('6')">6</button>
+    <button class="op" onclick="calc('+')">+</button>
+    <button class="sci" onclick="calc('Math.E')">e</button>
+
+    <button class="num" onclick="calc('1')">1</button>
+    <button class="num" onclick="calc('2')">2</button>
+    <button class="num" onclick="calc('3')">3</button><button class="op" onclick="calc('%')">%</button>
+    <button class="brec" onclick="calc(')')">)</button>
+    
+    <button class="equal" onclick="result()">=</button>
+
+    <button class="num" onclick="calc('0')">0</button>
+    <button class="num" onclick="calc('.')">.</button>
+    <button class="brec" onclick="calc('(')">(</button>
+
+  </div>
+</div>
+
+<script>
+
+/* LOADER */
+window.onload = () => {
+  setTimeout(()=>{
+    document.getElementById("loader").style.display="none";
+    document.getElementById("app").style.display="block";
+  },2000);
+};
+
+const display = document.getElementById("display");
+
+/* INPUT */
+function calc(val){
+  display.value += val;
+}
+
+/* CLEAR */
+function clearDisplay(){
+  display.value="";
+}
+
+/* DELETE */
+function del(){
+  display.value = display.value.slice(0,-1);
+}
+
+/* RESULT */
+function result(){
+  try{
+    display.value = eval(display.value);
+  }catch{
+    display.value="Error";
+  }
+}
+
+</script>
+
+</body>
+</html>
